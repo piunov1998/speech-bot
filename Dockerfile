@@ -1,5 +1,7 @@
 FROM python:3.11-slim-buster
 
+RUN apt update && apt install ffmpeg
+
 COPY requirements.txt /tmp
 RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
