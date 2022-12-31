@@ -40,9 +40,20 @@ async def on_ready():
     print('Started')
 
 
+@bot.event
+async def on_voice_state_update(
+    member: discord.Member,
+    _,
+    state: discord.VoiceState
+):
+    bot_status = get(bot.voice_clients, guild=member.guild)
+    if bot_status.channel != state.channel:
+        await bot_status.disconnect(force=False)
+
+
 @bot.hybrid_command('say', with_app_command=True)
 @app_commands.guilds(MY_GUILD)
-@commands.has_permissions(administrator=True)
+@commands.is_owner()
 async def say(ctx: commands.Context, text: str):
     try:
         await connect(ctx)
