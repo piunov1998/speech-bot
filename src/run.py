@@ -1,4 +1,3 @@
-import io
 import os
 
 import discord
@@ -43,11 +42,17 @@ async def on_ready():
 @bot.event
 async def on_voice_state_update(
     member: discord.Member,
-    _,
+    b_state: discord.VoiceState,
     state: discord.VoiceState
 ):
     bot_status = get(bot.voice_clients, guild=member.guild)
-    if bot_status.channel != state.channel:
+    if bot_status.channel is None:
+        return
+    if (
+        b_state.channel == bot_status.channel and
+        bot_status.channel != state.channel and
+        len(b_state.channel.voice_states) <= 1
+    ):
         await bot_status.disconnect(force=False)
 
 
