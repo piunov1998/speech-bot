@@ -46,7 +46,7 @@ async def on_voice_state_update(
     state: discord.VoiceState
 ):
     bot_status = get(bot.voice_clients, guild=member.guild)
-    if bot_status.channel is None:
+    if bot_status is None:
         return
     if (
         b_state.channel == bot_status.channel and
